@@ -9,15 +9,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import dev.msfjarvis.aps.R
+import dev.msfjarvis.aps.data.crypto.CryptoViewModel
 import dev.msfjarvis.aps.data.passfile.PasswordEntry
 import dev.msfjarvis.aps.data.password.FieldItem
 import dev.msfjarvis.aps.databinding.DecryptLayoutBinding
 import dev.msfjarvis.aps.injection.crypto.CryptoSet
 import dev.msfjarvis.aps.injection.password.PasswordEntryFactory
 import dev.msfjarvis.aps.ui.adapters.FieldItemAdapter
+import dev.msfjarvis.aps.ui.theme.APSTheme
 import dev.msfjarvis.aps.util.extensions.unsafeLazy
 import dev.msfjarvis.aps.util.extensions.viewBinding
 import java.io.File
@@ -37,6 +41,7 @@ class DecryptActivityV2 : BasePgpActivity() {
   @Inject lateinit var passwordEntryFactory: PasswordEntryFactory
   @Inject lateinit var cryptos: CryptoSet
   private val relativeParentPath by unsafeLazy { getParentPath(fullPath, repoPath) }
+  private val viewModel: CryptoViewModel by viewModels()
 
   private var passwordEntry: PasswordEntry? = null
 
@@ -44,16 +49,18 @@ class DecryptActivityV2 : BasePgpActivity() {
     super.onCreate(savedInstanceState)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     title = name
-    with(binding) {
-      setContentView(root)
-      passwordCategory.text = relativeParentPath
-      passwordFile.text = name
-      passwordFile.setOnLongClickListener {
-        copyTextToClipboard(name)
-        true
+    viewModel.apply {
+      setFullPath(fullPath)
+      setRelativeParentPath(relativeParentPath)
+      setName(name)
+    }
+    setContent {
+      APSTheme {
+        DecryptScreen(
+          viewModel = viewModel,
+        )
       }
     }
-    decrypt()
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

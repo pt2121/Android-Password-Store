@@ -9,11 +9,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ViewModelComponent
 import dev.msfjarvis.aps.util.totp.TotpFinder
 import dev.msfjarvis.aps.util.totp.UriTotpFinder
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(ActivityComponent::class, ViewModelComponent::class)
 interface TotpModule {
-  @Binds abstract fun bindTotpFinder(totpFinder: UriTotpFinder): TotpFinder
+  @Binds fun bindTotpFinder(totpFinder: UriTotpFinder): TotpFinder
 }
