@@ -29,6 +29,7 @@ import dev.msfjarvis.aps.ui.crypto.GopenpgpDecryptActivity
 import dev.msfjarvis.aps.util.autofill.AutofillPreferences
 import dev.msfjarvis.aps.util.autofill.AutofillResponseBuilder
 import dev.msfjarvis.aps.util.autofill.DirectoryStructure
+import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -128,11 +129,14 @@ class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
         runCatching {
           val crypto = cryptos.first { it.canHandle(file.absolutePath) }
           withContext(Dispatchers.IO) {
+            val outputStream = ByteArrayOutputStream()
             crypto.decrypt(
               GopenpgpDecryptActivity.PRIV_KEY,
-              GopenpgpDecryptActivity.PASS.toByteArray(charset = Charsets.UTF_8),
-              encryptedInput.readBytes()
+              GopenpgpDecryptActivity.PASS,
+              encryptedInput,
+              outputStream,
             )
+            outputStream
           }
         }
           .onFailure { e ->
@@ -141,7 +145,7 @@ class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
           }
           .onSuccess { result ->
             return runCatching {
-              val entry = passwordEntryFactory.create(lifecycleScope, result)
+              val entry = passwordEntryFactory.create(lifecycleScope, result.toByteArray())
               AutofillPreferences.credentialsFromStoreEntry(this, file, entry, directoryStructure)
             }
               .getOrElse { e ->
