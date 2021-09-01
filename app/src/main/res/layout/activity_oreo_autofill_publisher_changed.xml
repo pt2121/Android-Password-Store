@@ -107,7 +107,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/okButton"
-    style="@style/AppTheme.OutlinedButton"
+    style="?attr/materialButtonOutlinedStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -122,7 +122,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/advancedButton"
-    style="@style/AppTheme.OutlinedButton"
+    style="?attr/materialButtonOutlinedStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -137,7 +137,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/resetButton"
-    style="@style/AppTheme.OutlinedButton"
+    style="?attr/materialButtonOutlinedStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/activity_horizontal_margin"

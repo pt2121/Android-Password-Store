@@ -12,7 +12,7 @@
 
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/folder_name_container"
-    style="@style/AppTheme.TextInputLayout"
+    style="?attr/textInputOutlinedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/crypto_name_hint"

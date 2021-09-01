@@ -10,7 +10,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/create_folder"
-    style="@style/Widget.MaterialComponents.Button.TextButton"
+    style="?attr/borderlessButtonStyle"
     android:layout_width="match_parent"
     android:layout_height="@dimen/bottom_sheet_item_height"
     android:layout_margin="@dimen/normal_margin"
@@ -26,7 +26,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/create_password"
-    style="@style/Widget.MaterialComponents.Button.TextButton"
+    style="?attr/borderlessButtonStyle"
     android:layout_width="match_parent"
     android:layout_height="@dimen/bottom_sheet_item_height"
     android:layout_margin="@dimen/normal_margin"

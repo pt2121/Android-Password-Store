@@ -19,6 +19,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/label_server_url"
+      style="?attr/textInputOutlinedStyle"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
@@ -39,6 +40,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/label_server_branch"
+      style="?attr/textInputOutlinedStyle"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
@@ -56,9 +58,9 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
       android:id="@+id/label_auth_mode"
-      style="@style/TextAppearance.MaterialComponents.Headline6"
+      style="?attr/textAppearanceTitleLarge"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"

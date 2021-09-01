@@ -10,6 +10,7 @@
 
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/secret_layout"
+    style="?attr/textInputOutlinedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/otp_import_manual_hint_secret"
@@ -32,6 +33,7 @@
 
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/account_layout"
+    style="?attr/textInputOutlinedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/otp_import_manual_hint_account"

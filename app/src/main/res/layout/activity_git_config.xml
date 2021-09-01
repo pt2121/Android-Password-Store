@@ -15,6 +15,7 @@
 
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/username_input_layout"
+    style="?attr/textInputOutlinedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
@@ -33,6 +34,7 @@
 
   <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/email_input_layout"
+    style="?attr/textInputOutlinedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
@@ -59,7 +61,7 @@
 
   <androidx.appcompat.widget.AppCompatTextView
     android:id="@+id/git_tools_title"
-    style="@style/TextAppearance.MaterialComponents.Headline5"
+    style="?attr/textAppearanceHeadlineSmall"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"

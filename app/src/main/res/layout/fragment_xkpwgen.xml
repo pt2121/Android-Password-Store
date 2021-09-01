@@ -17,7 +17,7 @@
     android:paddingEnd="24dp"
     android:paddingBottom="20dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
       android:id="@+id/xkPasswordText"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -30,6 +30,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/total_words"
+      style="?attr/textInputOutlinedStyle"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginEnd="8dp"
@@ -50,6 +51,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/separator"
+      style="?attr/textInputOutlinedStyle"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="8dp"
@@ -81,6 +83,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/xk_numbers_symbols_label"
+      style="?attr/textInputOutlinedStyle"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:hint="@string/xkpwgen_extrachars_label"
