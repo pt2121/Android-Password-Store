@@ -25,7 +25,7 @@ import com.github.michaelbull.result.runCatching
 import dagger.hilt.android.AndroidEntryPoint
 import dev.msfjarvis.aps.injection.crypto.CryptoSet
 import dev.msfjarvis.aps.injection.password.PasswordEntryFactory
-import dev.msfjarvis.aps.ui.crypto.GopenpgpDecryptActivity
+import dev.msfjarvis.aps.ui.crypto.DecryptActivityV2
 import dev.msfjarvis.aps.util.autofill.AutofillPreferences
 import dev.msfjarvis.aps.util.autofill.AutofillResponseBuilder
 import dev.msfjarvis.aps.util.autofill.DirectoryStructure
@@ -38,7 +38,7 @@ import kotlinx.coroutines.withContext
 
 @RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
-class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
+class AutofillDecryptActivityV2 : AppCompatActivity() {
 
   companion object {
 
@@ -48,7 +48,7 @@ class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
     private var decryptFileRequestCode = 1
 
     fun makeDecryptFileIntent(file: File, forwardedExtras: Bundle, context: Context): Intent {
-      return Intent(context, GopenpgpAutofillDecryptActivity::class.java).apply {
+      return Intent(context, AutofillDecryptActivityV2::class.java).apply {
         putExtras(forwardedExtras)
         putExtra(EXTRA_SEARCH_ACTION, true)
         putExtra(EXTRA_FILE_PATH, file.absolutePath)
@@ -57,7 +57,7 @@ class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
 
     fun makeDecryptFileIntentSender(file: File, context: Context): IntentSender {
       val intent =
-        Intent(context, GopenpgpAutofillDecryptActivity::class.java).apply {
+        Intent(context, AutofillDecryptActivityV2::class.java).apply {
           putExtra(EXTRA_SEARCH_ACTION, false)
           putExtra(EXTRA_FILE_PATH, file.absolutePath)
         }
@@ -81,14 +81,14 @@ class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
     val filePath =
       intent?.getStringExtra(EXTRA_FILE_PATH)
         ?: run {
-          e { "GopenpgpAutofillDecryptActivity started without EXTRA_FILE_PATH" }
+          e { "AutofillDecryptActivityV2 started without EXTRA_FILE_PATH" }
           finish()
           return
         }
     val clientState =
       intent?.getBundleExtra(AutofillManager.EXTRA_CLIENT_STATE)
         ?: run {
-          e { "GopenpgpAutofillDecryptActivity started without EXTRA_CLIENT_STATE" }
+          e { "AutofillDecryptActivityV2 started without EXTRA_CLIENT_STATE" }
           finish()
           return
         }
@@ -103,7 +103,7 @@ class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
       } else {
         val fillInDataset =
           AutofillResponseBuilder.makeFillInDataset(
-            this@GopenpgpAutofillDecryptActivity,
+            this@AutofillDecryptActivityV2,
             credentials,
             clientState,
             action
@@ -131,8 +131,8 @@ class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
           withContext(Dispatchers.IO) {
             val outputStream = ByteArrayOutputStream()
             crypto.decrypt(
-              GopenpgpDecryptActivity.PRIV_KEY,
-              GopenpgpDecryptActivity.PASS,
+              DecryptActivityV2.PRIV_KEY,
+              DecryptActivityV2.PASS,
               encryptedInput,
               outputStream,
             )
@@ -140,7 +140,7 @@ class GopenpgpAutofillDecryptActivity : AppCompatActivity() {
           }
         }
           .onFailure { e ->
-            e(e) { "Decryption with Gopenpgp failed" }
+            e(e) { "Decryption failed" }
             return null
           }
           .onSuccess { result ->
