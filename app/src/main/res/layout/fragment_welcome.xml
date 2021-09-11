@@ -43,7 +43,7 @@
     android:layout_marginTop="16dp"
     android:text="@string/app_name"
     android:textAppearance="?attr/textAppearanceHeadlineSmall"
-    android:textColor="@color/color_control_normal"
+    android:textColor="?attr/colorOnPrimary"
     android:textStyle="bold"
     android:transitionName="transition_first_run_app_name"
     app:layout_constraintEnd_toEndOf="parent"

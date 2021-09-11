@@ -15,7 +15,7 @@
     android:id="@+id/cover"
     android:layout_width="0dp"
     android:layout_height="60dp"
-    android:background="@color/primary_color"
+    android:background="?attr/colorPrimary"
     android:contentDescription="@string/app_name"
     android:src="@mipmap/ic_launcher_foreground"
     app:layout_constraintBottom_toTopOf="@id/origin"
