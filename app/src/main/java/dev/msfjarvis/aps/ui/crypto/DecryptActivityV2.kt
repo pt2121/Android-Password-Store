@@ -54,13 +54,7 @@ class DecryptActivityV2 : BasePgpActivity() {
       setRelativeParentPath(relativeParentPath)
       setName(name)
     }
-    setContent {
-      APSTheme {
-        DecryptScreen(
-          viewModel = viewModel,
-        )
-      }
-    }
+    setContent { APSTheme { DecryptScreen(viewModel = viewModel) } }
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

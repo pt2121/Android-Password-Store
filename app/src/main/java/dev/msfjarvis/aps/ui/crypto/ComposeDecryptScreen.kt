@@ -24,13 +24,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -47,41 +47,62 @@ fun DecryptScreen(
   viewModel: CryptoViewModel,
 ) {
   var passwordEntry by remember { mutableStateOf<PasswordEntry?>(null) }
-  val coroutineScope = rememberCoroutineScope()
-  val context = LocalContext.current as FragmentActivity
+  val context = LocalContext.current
+
   Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    DecryptScreenHeader(
+      relativeParentPath = viewModel.getRelativeParentPath(),
+      name = viewModel.getName()
+    )
+    Divider()
+    DecryptScreenBody(
+      passwordEntry = passwordEntry,
+      copyToClipboard = { text -> viewModel.copyToClipboard(context, text) }
+    )
+  }
+
+  LaunchedEffect(passwordEntry) {
+    passwordEntry = viewModel.decryptPassword(viewModel.getFullPath(), this)
+  }
+}
+
+@OptIn(ExperimentalUnitApi::class)
+@Composable
+fun DecryptScreenHeader(relativeParentPath: String, name: String, modifier: Modifier = Modifier) {
+  Column(modifier = modifier.fillMaxWidth()) {
     Text(
-      text = viewModel.getRelativeParentPath(),
+      text = relativeParentPath,
       fontSize = TextUnit(18f, TextUnitType.Sp),
       fontWeight = FontWeight.Bold,
       modifier = Modifier.padding(vertical = 8.dp),
     )
     Text(
-      text = viewModel.getName(),
+      text = name,
       color = MaterialTheme.colors.primary,
       fontSize = TextUnit(24f, TextUnitType.Sp),
       fontWeight = FontWeight.Bold,
       modifier = Modifier.padding(bottom = 8.dp),
     )
-    Divider()
-    if (passwordEntry != null) {
-      DecryptedPassword(passwordEntry!!) { text ->
-        viewModel.copyToClipboard(context, text)
-        context.snackbar(message = context.resources.getString(R.string.clipboard_copied_text))
-      }
-    } else {
-      Box(modifier = Modifier.fillMaxSize()) {
-        CircularProgressIndicator(
-          modifier = Modifier.align(Alignment.Center).fillMaxSize(0.4f),
-        )
-      }
-      LaunchedEffect(passwordEntry) {
-        passwordEntry =
-          viewModel.decryptPassword(
-            viewModel.getFullPath(),
-            coroutineScope,
-          )
-      }
+  }
+}
+
+@OptIn(ExperimentalUnitApi::class)
+@Composable
+fun DecryptScreenBody(
+  passwordEntry: PasswordEntry?,
+  copyToClipboard: (String) -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  val context = LocalContext.current as FragmentActivity
+
+  if (passwordEntry != null) {
+    DecryptedPassword(passwordEntry) { text ->
+      copyToClipboard(text)
+      context.snackbar(message = context.resources.getString(R.string.clipboard_copied_text))
+    }
+  } else {
+    Box(modifier = modifier.fillMaxSize()) {
+      CircularProgressIndicator(modifier = Modifier.align(Alignment.Center).fillMaxSize(0.4f))
     }
   }
 }
@@ -149,10 +170,11 @@ fun PasswordField(
   copyToClipboard: ((String) -> Unit)? = null,
   trailingIcon: @Composable (() -> Unit)? = null,
 ) {
-  var modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth()
+  val modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth()
   if (copyToClipboard != null) {
-    modifier = Modifier.clickable { copyToClipboard(text) }.then(modifier)
+    modifier.clickable { copyToClipboard(text) }
   }
+
   OutlinedTextField(
     value = text,
     onValueChange = {},
@@ -161,4 +183,22 @@ fun PasswordField(
     readOnly = true,
     modifier = modifier,
   )
+}
+
+@Preview(name = "Header", showBackground = true)
+@Composable
+fun PreviewDecryptScreenHeader() {
+  DecryptScreenHeader(relativeParentPath = "/social/twitter.com", name = "aps")
+}
+
+@Preview(name = "Body", showBackground = true)
+@Composable
+fun PreviewDecryptScreenBody() {
+  DecryptScreenBody(passwordEntry = null, copyToClipboard = {})
+}
+
+@Preview(name = "Password Field", showBackground = true)
+@Composable
+fun PreviewPasswordField() {
+  PasswordField(label = "Password", text = "T0P_S3CR3T_P4SSW0RD", null, null)
 }
